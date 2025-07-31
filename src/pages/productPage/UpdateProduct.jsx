@@ -114,46 +114,108 @@ const UpdateProduct = () => {
           </div>
         )}
 
-        <input name="name" value={formData.name} onChange={handleChange} className={inputClass} required />
-        <input name="price" type="number" value={formData.price} onChange={handleChange} className={inputClass} required />
-        <input name="stock" type="number" value={formData.stock} onChange={handleChange} className={inputClass} required />
-        <textarea name="shortDesc" value={formData.shortDesc} onChange={handleChange} className={inputClass} />
-        <textarea name="detailedDesc" value={formData.detailedDesc} onChange={handleChange} className={inputClass} />
+        {/* Product Name */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Product Name</label>
+          <input name="name" value={formData.name} onChange={handleChange} className={inputClass} required />
+        </div>
 
-        <select name="gender" value={formData.gender} onChange={handleChange} className={inputClass} required>
-          <option value="">Select Gender</option>
-          <option value="Men">Men</option>
-          <option value="Women">Women</option>
-          <option value="Unisex">Unisex</option>
-        </select>
+        {/* Price */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Price ($)</label>
+          <input name="price" type="number" value={formData.price} onChange={handleChange} className={inputClass} required />
+        </div>
 
-        <select name="category" value={formData.category} onChange={handleChange} className={inputClass} required>
-          <option value="">Select Category</option>
-          <option value="Sneakers">Sneakers</option>
-          <option value="Formal">Formal</option>
-          <option value="Casual">Casual</option>
-          <option value="Boots">Boots</option>
-        </select>
+        {/* Stock */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Stock Quantity</label>
+          <input name="stock" type="number" value={formData.stock} onChange={handleChange} className={inputClass} required />
+        </div>
 
-        <select name="categorypage" value={formData.categorypage} onChange={handleChange} className={inputClass} required>
-          <option value="">Select Category Page</option>
-          <option value="Sneakers">Sneakers</option>
-          <option value="Formal">Formal</option>
-          <option value="Casual">Casual</option>
-          <option value="Boots">Boots</option>
-        </select>
-       
-         <select name="categorypage" value={formData.offer} onChange={handleChange} className={inputClass} >
+        {/* Short Description */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Short Description</label>
+          <textarea name="shortDesc" value={formData.shortDesc} onChange={handleChange} className={inputClass} />
+        </div>
+
+        {/* Detailed Description */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Detailed Description</label>
+          <textarea name="detailedDesc" value={formData.detailedDesc} onChange={handleChange} className={inputClass} />
+        </div>
+
+        {/* Gender */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Gender</label>
+          <select name="gender" value={formData.gender} onChange={handleChange} className={inputClass} required>
+            <option value="">Select Gender</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Unisex">Unisex</option>
+          </select>
+        </div>
+
+        {/* Category */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Category</label>
+          <select name="category" value={formData.category} onChange={handleChange} className={inputClass} required>
+            <option value="">Select Category</option>
+            <option value="Sneakers">Sneakers</option>
+            <option value="Formal">Formal</option>
+            <option value="Loafers">Loafers</option>
+            <option value="Boots">Boots</option>
+            <option value="Heels">Heels</option>
+            <option value="Flats">Flats</option>
+            <option value="Running">Running</option>
+            <option value="Football">Football</option>
+            <option value="Training">Training</option>
+            <option value="Basketball">Basketball</option>
+            <option value="Slippers">Slippers</option>
+            <option value="Daily Wear">Daily Wear</option>
+          </select>
+        </div>
+
+        {/* Category Page */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Category Page</label>
+          <select name="categorypage" value={formData.categorypage} onChange={handleChange} className={inputClass} required>
+            <option value="">Select Category Page</option>
+            <option value="Sneakers">Sneakers</option>
+            <option value="Formal">Formal</option>
+            <option value="Casual">Casual</option>
+            <option value="Boots">Boots</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        {/* Offer */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Offer</label>
+          <select name="offer" value={formData.offer} onChange={handleChange} className={inputClass}>
             <option value="">Select Offer</option>
             <option value="70%">70% Off</option>
             <option value="50%">50% Off</option>
             <option value="30%">30% Off</option>
           </select>
+        </div>
 
-        <input name="colors" value={formData.colors} onChange={handleChange} className={inputClass} placeholder="e.g., Red, Blue" />
-        <input name="sizes" value={formData.sizes} onChange={handleChange} className={inputClass} placeholder="e.g., 7, 8, 9" />
+        {/* Colors */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Colors (comma separated)</label>
+          <input name="colors" value={formData.colors} onChange={handleChange} className={inputClass} placeholder="e.g., Red, Blue" />
+        </div>
 
-        <input type="file" multiple accept="image/*" onChange={handleImageChange} className={inputClass} />
+        {/* Sizes */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Sizes (comma separated)</label>
+          <input name="sizes" value={formData.sizes} onChange={handleChange} className={inputClass} placeholder="e.g., 7, 8, 9" />
+        </div>
+
+        {/* New Images */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-800 dark:text-gray-300">Upload New Images</label>
+          <input type="file" multiple accept="image/*" onChange={handleImageChange} className={inputClass} />
+        </div>
 
         <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-md transition">
           Update Product

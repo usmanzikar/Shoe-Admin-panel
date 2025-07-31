@@ -60,7 +60,7 @@ const Products = () => {
                   } hover:bg-gray-100 dark:hover:bg-gray-700`}
                 >
                   <td className="p-3 text-gray-800 dark:text-gray-200">{product.name}</td>
-                  <td className="p-3 text-gray-800 dark:text-gray-200">${product.price}</td>
+                  <td className="p-3 text-gray-800 dark:text-gray-200">{product.price} Rs</td>
                   <td className="p-3 text-gray-800 dark:text-gray-200">{product.stock}</td>
                   <td className="p-3 flex justify-center gap-3">
                     <Link

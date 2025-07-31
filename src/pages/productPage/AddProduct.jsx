@@ -37,20 +37,26 @@ const AddProduct = () => {
     const formData = new FormData();
     Object.entries(productData).forEach(([key, value]) => {
       if (key === "colors" || key === "sizes") {
-        formData.append(key, JSON.stringify(value.split(",").map(v => v.trim())));
+        formData.append(
+          key,
+          value.split(",").map((v) => v.trim())
+        ); // No JSON.stringify
       } else {
         formData.append(key, value);
       }
     });
 
-    imageFiles.forEach(file => formData.append("images", file));
+    imageFiles.forEach((file) => formData.append("images", file));
 
     try {
       await createProduct(formData);
       alert("Product added successfully!");
       navigate("/products");
     } catch (error) {
-      console.error("Add product error:", error.response?.data || error.message);
+      console.error(
+        "Add product error:",
+        error.response?.data || error.message
+      );
       alert("Failed to add product");
     }
   };
@@ -70,58 +76,106 @@ const AddProduct = () => {
       >
         <div>
           <label className={labelClasses}>Product Name</label>
-          <input name="name" onChange={handleChange} className={inputClasses} required />
+          <input
+            name="name"
+            onChange={handleChange}
+            className={inputClasses}
+            required
+          />
         </div>
 
         <div>
           <label className={labelClasses}>Price</label>
-          <input name="price" type="number" onChange={handleChange} className={inputClasses} required />
+          <input
+            name="price"
+            type="number"
+            onChange={handleChange}
+            className={inputClasses}
+            required
+          />
         </div>
 
         <div>
           <label className={labelClasses}>Stock</label>
-          <input name="stock" type="number" onChange={handleChange} className={inputClasses} required />
+          <input
+            name="stock"
+            type="number"
+            onChange={handleChange}
+            className={inputClasses}
+            required
+          />
         </div>
 
         <div>
           <label className={labelClasses}>Short Description</label>
-          <textarea name="shortDesc" onChange={handleChange} className={inputClasses} />
+          <textarea
+            name="shortDesc"
+            onChange={handleChange}
+            className={inputClasses}
+          />
         </div>
 
         <div>
           <label className={labelClasses}>Detailed Description</label>
-          <textarea name="detailedDesc" onChange={handleChange} className={inputClasses} />
+          <textarea
+            name="detailedDesc"
+            onChange={handleChange}
+            className={inputClasses}
+          />
         </div>
 
         <div>
           <label className={labelClasses}>Gender</label>
-          <select name="gender" onChange={handleChange} className={inputClasses} required>
+          <select
+            name="gender"
+            onChange={handleChange}
+            className={inputClasses}
+            required
+          >
             <option value="">Select Gender</option>
             <option value="Men">Men</option>
             <option value="Women">Women</option>
-            <option value="Unisex">Unisex</option>
           </select>
         </div>
 
         <div>
           <label className={labelClasses}>Category</label>
-          <select name="category" onChange={handleChange} className={inputClasses} required>
+          <select
+            name="category"
+            onChange={handleChange}
+            className={inputClasses}
+            required
+          >
             <option value="">Select Category</option>
             <option value="Sneakers">Sneakers</option>
             <option value="Formal">Formal</option>
-            <option value="Casual">Casual</option>
+            <option value="Loafers">Loafers</option>
             <option value="Boots">Boots</option>
+            <option value="Heels">Heels</option>
+            <option value="Flats">Flats</option>
+            <option value="Running">Running</option>
+            <option value="Football">Football</option>
+            <option value="Training">Training</option>
+            <option value="Basketball">Basketball</option>
+            <option value="Slippers">Slippers</option>
+            <option value="Daily Wear">Daily Wear</option>
           </select>
         </div>
 
         <div>
           <label className={labelClasses}>Category Page</label>
-          <select name="categorypage" onChange={handleChange} className={inputClasses} required>
+          <select
+            name="categorypage"
+            onChange={handleChange}
+            className={inputClasses}
+            required
+          >
             <option value="">Select Category Page</option>
             <option value="Sneakers">Sneakers</option>
             <option value="Formal">Formal</option>
             <option value="Casual">Casual</option>
             <option value="Boots">Boots</option>
+            <option value="Others">Others</option>
           </select>
         </div>
 
@@ -137,17 +191,31 @@ const AddProduct = () => {
 
         <div>
           <label className={labelClasses}>Colors (comma separated)</label>
-          <input name="colors" onChange={handleChange} className={inputClasses} />
+          <input
+            name="colors"
+            onChange={handleChange}
+            className={inputClasses}
+          />
         </div>
 
         <div>
           <label className={labelClasses}>Sizes (comma separated)</label>
-          <input name="sizes" onChange={handleChange} className={inputClasses} />
+          <input
+            name="sizes"
+            onChange={handleChange}
+            className={inputClasses}
+          />
         </div>
 
         <div>
           <label className={labelClasses}>Upload Images</label>
-          <input type="file" multiple accept="image/*" onChange={handleImageChange} className={inputClasses} />
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+            className={inputClasses}
+          />
         </div>
 
         <button
