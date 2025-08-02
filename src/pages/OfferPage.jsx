@@ -29,17 +29,6 @@ const OfferPage = () => {
     setFilteredProducts(products.filter(p => p.offer === activeOffer));
   };
 
-  const handleOfferChange = async (productId, newOffer) => {
-    try {
-      await updateProductOffer(productId, newOffer); // API call
-      setProducts(prev =>
-        prev.map(p => (p._id === productId ? { ...p, offer: newOffer } : p))
-      );
-    } catch (err) {
-      console.error("Error updating offer:", err);
-    }
-  };
-
   return (
     <div>
       <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">
@@ -72,7 +61,6 @@ const OfferPage = () => {
               <th className="p-3">Price</th>
               <th className="p-3">Stock</th>
               <th className="p-3">Current Offer</th>
-              <th className="p-3 text-center">Change Offer</th>
             </tr>
           </thead>
           <tbody>
@@ -94,22 +82,7 @@ const OfferPage = () => {
                   <td className="p-3 text-gray-800 dark:text-gray-200">
                     {product.offer}
                   </td>
-                  <td className="p-3 text-center">
-                    <select
-                      className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm cursor-pointer text-gray-800 dark:text-white"
-                      value={product.offer || ""}
-                      onChange={e =>
-                        handleOfferChange(product._id, e.target.value || "")
-                      }
-                    >
-                      <option value="">No Offer</option>
-                      {OFFER_TABS.map(o => (
-                        <option key={o} value={o}>
-                          {o}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
+                 
                 </tr>
               ))
             ) : (

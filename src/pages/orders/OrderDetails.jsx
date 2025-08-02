@@ -1,52 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { fetchOrderById } from "../../utils/api"; // ✅ Add this API function in utils/api.js
 
 const OrderDetails = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
 
   const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: Replace with API call to fetch order details by orderId
-    const mockOrderDetail = {
-      id: orderId,
-      customer: {
-        name: "John Doe",
-        email: "john@example.com",
-        phone: "+1 234 567 890",
-        address: "123 Main St, City, Country",
-      },
-      date: "2025-07-29",
-      status: "Delivered",
-      products: [
-        {
-          id: "prod1",
-          name: "Sneakers Model A",
-          quantity: 2,
-          price: 50,
-          imageUrl: "https://i.pravatar.cc/60?img=12",
-        },
-        {
-          id: "prod2",
-          name: "Formal Shoes Model B",
-          quantity: 1,
-          price: 130,
-          imageUrl: "https://i.pravatar.cc/60?img=15",
-        },
-      ],
-      shippingFee: 10,
-      totalAmount: 240,
-      paymentMethod: "Credit Card",
+    const getOrderDetails = async () => {
+      try {
+        setLoading(true);
+        const { data } = await fetchOrderById(orderId); // API call
+        setOrder(data);
+      } catch (err) {
+        console.error("Error fetching order details:", err);
+      } finally {
+        setLoading(false);
+      }
     };
-
-    setOrder(mockOrderDetail);
+    getOrderDetails();
   }, [orderId]);
 
-  if (!order) {
+  if (loading) {
     return (
       <div className="text-center text-gray-500 dark:text-gray-400 mt-10">
         Loading order details...
+      </div>
+    );
+  }
+
+  if (!order) {
+    return (
+      <div className="text-center text-red-500 dark:text-red-400 mt-10">
+        Order not found.
       </div>
     );
   }
@@ -61,25 +50,25 @@ const OrderDetails = () => {
       </button>
 
       <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
-        Order Details - {order.id}
+        Order Details - {order.orderId}
       </h2>
 
       <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800 dark:text-gray-200">
         <div>
           <h3 className="font-semibold mb-2">Customer Info</h3>
-          <p><strong>Name:</strong> {order.customer.name}</p>
-          <p><strong>Email:</strong> {order.customer.email}</p>
-          <p><strong>Phone:</strong> {order.customer.phone}</p>
-          <p><strong>Address:</strong> {order.customer.address}</p>
+          <p><strong>Name:</strong> {order.shippingAddress.fullName}</p>
+          <p><strong>Email:</strong> {order.customerEmail}</p>
+          <p><strong>Phone:</strong> {order.shippingAddress.phone}</p>
+          <p><strong>Address:</strong> {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.country}</p>
         </div>
 
         <div>
           <h3 className="font-semibold mb-2">Order Info</h3>
-          <p><strong>Order Date:</strong> {order.date}</p>
+          <p><strong>Order Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
           <p><strong>Status:</strong> {order.status}</p>
           <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
-          <p><strong>Shipping Fee:</strong> ${order.shippingFee}</p>
-          <p className="font-bold text-lg">Total Amount: ${order.totalAmount}</p>
+          <p><strong>Shipping Fee:</strong> {order.shippingFee ? `${order.shippingFee} PKR` : "Free"}</p>
+          <p className="font-bold text-lg">Total Amount: {order.totalAmount} PKR</p>
         </div>
       </div>
 
@@ -96,23 +85,18 @@ const OrderDetails = () => {
           </thead>
           <tbody>
             {order.products.map((prod) => (
-              <tr key={prod.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
+              <tr key={prod.productId} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                 <td className="border border-gray-300 dark:border-gray-700 p-2 flex items-center gap-3">
-                  <img
-                    src={prod.imageUrl}
-                    alt={prod.name}
-                    className="w-12 h-12 object-cover rounded"
-                  />
                   <span>{prod.name}</span>
                 </td>
                 <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
                   {prod.quantity}
                 </td>
                 <td className="border border-gray-300 dark:border-gray-700 p-2 text-right">
-                  ${prod.price}
+                  {prod.price} PKR
                 </td>
                 <td className="border border-gray-300 dark:border-gray-700 p-2 text-right">
-                  ${prod.price * prod.quantity}
+                  {prod.price * prod.quantity} PKR
                 </td>
               </tr>
             ))}

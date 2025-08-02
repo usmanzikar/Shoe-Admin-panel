@@ -1,22 +1,24 @@
-// src/pages/customers/Customers.jsx
 import React, { useEffect, useState } from "react";
-// import { fetchCustomers } from "../../utils/api"; // later when API ready
+import API from "../utils/api";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // For now, mock customers — replace with API call
-    const mockData = [
-      { id: 1, name: "John Doe", email: "john@example.com", totalOrders: 5, totalAmount: 250 },
-      { id: 2, name: "Jane Smith", email: "jane@example.com", totalOrders: 3, totalAmount: 150 },
-      { id: 3, name: "Ali Khan", email: "ali@example.com", totalOrders: 8, totalAmount: 480 },
-    ];
-    setCustomers(mockData);
+  const fetchCustomers = async () => {
+    try {
+      const { data } = await API.get("/users/all"); // ✅ fixed endpoint
+      setCustomers(data.customers); // ✅ store array only
+    } catch (err) {
+      console.error("Error fetching customers:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchCustomers();
+}, []);
 
-    // When API ready:
-    // fetchCustomers().then(res => setCustomers(res.data));
-  }, []);
 
   return (
     <div>
@@ -25,46 +27,47 @@ const Customers = () => {
       </h2>
 
       <div className="overflow-x-auto rounded-lg shadow-lg">
-        <table className="w-full text-sm text-left bg-white dark:bg-gray-800">
-          <thead>
-            <tr className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-              <th className="p-3">Name</th>
-              <th className="p-3">Email</th>
-              <th className="p-3 text-center">Total Orders</th>
-              <th className="p-3 text-center">Total Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.length > 0 ? (
-              customers.map((customer, index) => (
-                <tr
-                  key={customer.id}
-                  className={`border-b dark:border-gray-600 ${
-                    index % 2 === 0
-                      ? "bg-gray-50 dark:bg-gray-900"
-                      : "bg-white dark:bg-gray-800"
-                  } hover:bg-gray-100 dark:hover:bg-gray-700`}
-                >
-                  <td className="p-3 text-gray-800 dark:text-gray-200">{customer.name}</td>
-                  <td className="p-3 text-gray-800 dark:text-gray-200">{customer.email}</td>
-                  <td className="p-3 text-center text-gray-800 dark:text-gray-200">{customer.totalOrders}</td>
-                  <td className="p-3 text-center text-gray-800 dark:text-gray-200">
-                    ${customer.totalAmount}
+        {loading ? (
+          <div className="text-center p-6 text-gray-500 dark:text-gray-400">
+            Loading customers...
+          </div>
+        ) : (
+          <table className="w-full text-sm text-left bg-white dark:bg-gray-800">
+            <thead>
+              <tr className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                <th className="p-3">Name</th>
+                <th className="p-3">Email</th>
+                <th className="p-3 text-center">Joined</th>
+              </tr>
+            </thead>
+            <tbody>
+              {customers.length > 0 ? (
+                customers.map((customers, index) => (
+                  <tr
+                    key={customers._id}
+                    className={`border-b dark:border-gray-600 ${
+                      index % 2 === 0
+                        ? "bg-gray-50 dark:bg-gray-900"
+                        : "bg-white dark:bg-gray-800"
+                    } hover:bg-gray-100 dark:hover:bg-gray-700`}
+                  >
+                    <td className="p-3">{customers.name}</td>
+                    <td className="p-3">{customers.email}</td>
+                    <td className="p-3 text-center">
+                      {new Date(customers.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="text-center p-4 text-gray-500">
+                    No customers found.
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="4"
-                  className="text-center p-4 text-gray-500 dark:text-gray-400"
-                >
-                  No customers found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

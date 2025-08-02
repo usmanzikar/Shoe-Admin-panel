@@ -37,4 +37,16 @@ export const deleteProduct = (id) => API.delete(`/products/${id}`);
 export const updateProductOffer = (id, offer) =>
   axios.put(`/api/products/${id}/offer`, { offer });
 
+//order api 
+export const fetchOrders = () => API.get("/orders");
+
+export const fetchOrderById = (id) => API.get(`/orders/${id}`);
+
+// Update order status (Processing, Shipped, Delivered, Cancelled)
+export const updateOrderStatus = (id, status) =>
+  API.patch(`/orders/${id}`, { status });
+
+
+export const deleteOrder = (id) => API.delete(`/orders/${id}`);
+
 export default API;
