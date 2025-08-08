@@ -30,27 +30,33 @@ const OrdersPage = () => {
     }
   };
 
+
   // ✅ Update Order Status API
   const handleStatusChange = async (orderId, newStatus) => {
-    try {
-      await API.patch(`/orders/${orderId}`, { status: newStatus });
+  try {
+    // Call API to update order
+    const res = await API.patch(`/orders/${orderId}`, { status: newStatus });
 
-      // Update UI instantly
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order._id === orderId ? { ...order, status: newStatus } : order
-        )
-      );
-      setFilteredOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order._id === orderId ? { ...order, status: newStatus } : order
-        )
-      );
-    } catch (error) {
-      console.error("❌ Failed to update status:", error);
-      alert("Failed to update order status. Please try again.");
-    }
-  };
+    // Get updated order (with paymentStatus included)
+    const updatedOrder = res.data.order;
+
+    // Update local state with full updated order
+    setOrders(prevOrders =>
+      prevOrders.map(order =>
+        order._id === orderId ? updatedOrder : order
+      )
+    );
+    setFilteredOrders(prevOrders =>
+      prevOrders.map(order =>
+        order._id === orderId ? updatedOrder : order
+      )
+    );
+  } catch (error) {
+    console.error("❌ Failed to update status:", error);
+    alert("Failed to update order status. Please try again.");
+  }
+};
+
 
   // 🔄 Filters
   useEffect(() => {
@@ -119,7 +125,8 @@ const OrdersPage = () => {
               <th className="p-3">Order ID</th>
               <th className="p-3">Customer</th>
               <th className="p-3">Date</th>
-              <th className="p-3">Status</th>
+              <th className="p-3">Order</th>
+              <th className="p-3">Payment</th>
               <th className="p-3 text-right">Total Amount</th>
               <th className="p-3 text-center">Update Status</th>
               <th className="p-3 text-center">Actions</th>
@@ -150,6 +157,9 @@ const OrdersPage = () => {
                   </td>
                   <td className="p-3 text-right text-gray-800 dark:text-gray-200">
                     {order.status}
+                  </td>
+                  <td className="p-3 text-right text-gray-800 dark:text-gray-200">
+                    {order.paymentStatus}
                   </td>
                   <td className="p-3 text-right text-gray-800 dark:text-gray-200">
                     ${order.totalAmount}
